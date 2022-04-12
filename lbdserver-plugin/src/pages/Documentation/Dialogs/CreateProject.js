@@ -10,6 +10,9 @@ import { LbdProject, LbdService } from "lbdserver-client-api"
 import { AGGREGATOR_ENDPOINT } from '../../../constants';
 import { extract } from '../../../util/functions';
 import { DCTERMS, LDP, RDFS } from '@inrupt/vocab-common-rdf'
+import Errormessage from '../../../components/errormessage';
+import { ids } from 'webpack';
+import { truncate } from 'lodash';
 
 export default function CreateProject(props) {
     const { open, title, description, Child, childProps } = props
@@ -27,6 +30,7 @@ export default function CreateProject(props) {
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
     const [id, setId] = useState(v4())
+    const [foutmelding,setFoutmelding] = useState(false)
     async function createProject() {
         try {
             setLoading(true)
@@ -36,11 +40,16 @@ export default function CreateProject(props) {
             console.log('aggregator', aggregator)
             const accessPoint = aggregator + id
             const myProject = new LbdProject(getDefaultSession(), accessPoint)
-            await myProject.create([], { [RDFS.label]: name, "http://www.w3.org/2006/time#year": year, "http://dbpedia.org/ontology/country": country, "http://dbpedia.org/ontology/city": city, "http://dbpedia.org/ontology/currentStatus": status, "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#Role": role }, true)
-            
-            setProject(myProject)
-            setSuccess(true)
-            setLoading(false)
+            if (year === "" || name === "" || country === "" || city === "" || status === "" || role === "") {
+                setError(true)
+                setLoading(false)
+            } else {
+                await myProject.create([], { [RDFS.label]: name, "http://www.w3.org/2006/time#year": year, "http://dbpedia.org/ontology/country": country, "http://dbpedia.org/ontology/city": city, "http://dbpedia.org/ontology/currentStatus": status, "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#Role": role, "http://id": id }, true)
+                setProject(myProject)
+                setSuccess(true)
+                setLoading(false)
+            }
+
         } catch (error) {
             console.log('error', error)
             setError(error)
@@ -48,7 +57,7 @@ export default function CreateProject(props) {
         }
 
     }
-
+    
     return <div>
         <Typography variant="h5">{title}</Typography>
         <Typography>{description}</Typography>
@@ -139,7 +148,8 @@ export default function CreateProject(props) {
                     error={role === ""}
                     helperText={role  === "" ? 'Empty field!' : ' '}
                 />
-            <Button style={{marginTop: 10, width: "200"}} variant="contained" onClick={createProject} disabled={loading}>Create Project</Button>
+            <Errormessage foutmelding = {foutmelding}/>
+            <Button style={{marginTop: 10, width: "200"}} variant="contained" onClick={createProject}>Create Project</Button>
             {error ? (
                 <Alert onClose={() => setError(null)} severity="error">{error.message}</Alert>
             ) : (<React.Fragment/>)}
@@ -154,4 +164,6 @@ export default function CreateProject(props) {
         )}
     </div>
 };
+
+
 
