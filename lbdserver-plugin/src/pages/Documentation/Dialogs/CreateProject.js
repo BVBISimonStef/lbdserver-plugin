@@ -18,7 +18,7 @@ export default function CreateProject(props) {
     const [endpointType, setEndpointType] = useState("public")
     const [projects, setProjects] = useState([])
     const [error, setError] = useState(null)
-    const [name, setName] = useState("MyFirstProject")
+    const [name, setName] = useState("")
     const [year, setYear] = useState("")
     const [country, setCountry] = useState("")
     const [city, setCity] = useState("")
@@ -36,7 +36,7 @@ export default function CreateProject(props) {
             console.log('aggregator', aggregator)
             const accessPoint = aggregator + id
             const myProject = new LbdProject(getDefaultSession(), accessPoint)
-            await myProject.create([], { [RDFS.label]: name, "http://www.w3.org/2006/time#year": year, "http://dbpedia.org/ontology/country": country, "http://dbpedia.org/ontology/city": city, "http://dbpedia.org/ontology/currentStatus": status }, true)
+            await myProject.create([], { [RDFS.label]: name, "http://www.w3.org/2006/time#year": year, "http://dbpedia.org/ontology/country": country, "http://dbpedia.org/ontology/city": city, "http://dbpedia.org/ontology/currentStatus": status, "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#Role": role }, true)
             
             setProject(myProject)
             setSuccess(true)
@@ -133,7 +133,7 @@ export default function CreateProject(props) {
                     placeholder="Role"
                     fullWidth
                     sx={{ mb: '2%' }}
-                    onChange={(e) => setYear(e.target.value)}
+                    onChange={(e) => setRole(e.target.value)}
                     autoFocus
                     disabled={loading}
                     error={role === ""}
