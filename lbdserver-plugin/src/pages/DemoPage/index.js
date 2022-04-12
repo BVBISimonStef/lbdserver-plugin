@@ -10,8 +10,8 @@ import BasicTabs from '../Documentation/Dialogs/BasicTabs'
 const DemoPage = () => {
     return (
         <Grid style={{ textAlign: "justify" }} container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-            <Grid item xs={0} sm={2} md={3} />
-            <Grid item style={{ margin: 15 }} xs={4} sm={4} md={6}>
+            <Grid item xs={1} sm={1} md={2} />
+            <Grid item xs={4} sm={6} md={8} >
                 <div style={subComponentStyle}>
                     <CreateProject title={"1. (optional) create a project (login required)"} />
                 </div>
