@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import BasicTabs from '../Documentation/Dialogs/BasicTabs';
 import Divider from '@mui/material/Divider';
 import Info from '../../components/info';
+import FormDialog from '../../components/issuemngmt';
 
 
 
@@ -14,6 +15,7 @@ const ProjectPage = () => {
             </Grid>
             <Grid item xs={4}>
                 <Info/>
+                <FormDialog/>
             </Grid>
         </Grid>
 
