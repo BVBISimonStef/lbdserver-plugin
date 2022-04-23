@@ -12,16 +12,13 @@ import Grid from '@mui/material/Grid';
 
 export default function BasicCard({project}) {
   const [metadata, setMetadata] = useState({})
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getProjectData()
   }, [])
 
   async function getProjectData() {
-      console.log(project)
       // https://comunica.dev/
-      
       const query =`SELECT ?label ?year ?country ?city ?currentStatus ?role ?id WHERE {
           <${project}> <http://www.w3.org/2000/01/rdf-schema#label> ?label ;
           <http://www.w3.org/2006/time#year> ?year ;
@@ -46,9 +43,9 @@ export default function BasicCard({project}) {
               role: binding.get('?role').id.slice(1, -1),
               id: binding.get('?id').id.slice(1, -1)
           }
+          console.log(myMetadata)
           setMetadata(myMetadata)
       })
-      setLoading(false)
   }
 
 
