@@ -12,22 +12,21 @@ import Grid from '@mui/material/Grid';
 
 export default function BasicCard({project}) {
   const [metadata, setMetadata] = useState({})
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getProjectData()
   }, [])
 
   async function getProjectData() {
-      console.log(project)
       // https://comunica.dev/
-      
-      const query =`SELECT ?label ?year ?country ?city ?currentStatus WHERE {
+      const query =`SELECT ?label ?year ?country ?city ?currentStatus ?role ?id WHERE {
           <${project}> <http://www.w3.org/2000/01/rdf-schema#label> ?label ;
           <http://www.w3.org/2006/time#year> ?year ;
           <http://dbpedia.org/ontology/country> ?country ;
           <http://dbpedia.org/ontology/city> ?city ;
-          <http://dbpedia.org/ontology/currentStatus> ?currentStatus .       
+          <http://dbpedia.org/ontology/currentStatus> ?currentStatus ;
+          <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#Role> ?role ;
+          <http://id> ?id .       
           
       } LIMIT 1
       `
@@ -40,11 +39,13 @@ export default function BasicCard({project}) {
               year: binding.get('?year').id.slice(1, -1),
               country: binding.get('?country').id.slice(1, -1),
               city: binding.get('?city').id.slice(1, -1),
-              currentStatus: binding.get('?currentStatus').id.slice(1, -1)
+              currentStatus: binding.get('?currentStatus').id.slice(1, -1),
+              role: binding.get('?role').id.slice(1, -1),
+              id: binding.get('?id').id.slice(1, -1)
           }
+          console.log(myMetadata)
           setMetadata(myMetadata)
       })
-      setLoading(false)
   }
 
 
@@ -71,7 +72,7 @@ export default function BasicCard({project}) {
                   color: 'white',
                   fontSize: 12
                 }} > 
-                  Project ID: d17bfb89-87aa-4ed8-8f0b-e22946f791d2
+                  Project ID: {metadata.id}
             </Typography>}
           />
           <CardContent>
@@ -97,7 +98,7 @@ export default function BasicCard({project}) {
               Role
             </Typography>
             <Typography sx={{ fontSize: 12 }} gutterBottom>
-              Architect        
+              {metadata.role}       
             </Typography>
           </CardContent>
         </CardActionArea>
