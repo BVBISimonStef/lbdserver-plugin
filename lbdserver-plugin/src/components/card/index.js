@@ -9,9 +9,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import {newEngine} from '@comunica/actor-init-sparql'
 import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
+import {LbdProject } from 'lbdserver-client-api'
+import { project as p } from "../../atoms"
+import {useRecoilState} from 'recoil'
 
 export default function BasicCard({project}) {
   const [metadata, setMetadata] = useState({})
+  const [full, setProject] = useRecoilState(p)
+
 
   useEffect(() => {
     getProjectData()
@@ -46,6 +51,14 @@ export default function BasicCard({project}) {
           setMetadata(myMetadata);;
       })
   }
+  async function setActiveProject() {
+    const theProject = new LbdProject(getDefaultSession(), project)
+    await theProject.init()
+    setProject(theProject)
+    console.log(theProject)
+    // redirect to project page
+
+}
 
   // if (Object.values(metadata).includes("Bim Coordinator")) {
     return (
@@ -105,6 +118,7 @@ export default function BasicCard({project}) {
             <IconButton>
               <DeleteIcon/>
             </IconButton>
+            <Button onClick={() => setActiveProject()}>Activate</Button>
           </CardActions>
         </Card>
     );
