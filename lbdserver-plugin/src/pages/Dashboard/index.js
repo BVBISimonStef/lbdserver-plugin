@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
-import {newEngine} from '@comunica/actor-init-sparql'
 import {LbdService} from "lbdserver-client-api"
 
 import BasicCard from '../../components/card';
@@ -30,7 +29,7 @@ const DashboardPage = () => {
           console.log('error', error);
       }
     }
-
+  
   return (
     <Grid container spacing={3} sx={{p: 3}}>
       <Grid item lg={4} md={6} sm={6} xs={12}>  
@@ -54,3 +53,4 @@ const DashboardPage = () => {
 }
 
 export default DashboardPage
+
