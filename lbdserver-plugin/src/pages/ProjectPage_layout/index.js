@@ -15,14 +15,14 @@ const ProjectPage = () => {
             <Grid item xs={8}>
                 <BasicTabs title={"Scroll through the enrichment modules, visualise and query the project."} />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
                 <Info />
                 <FormDialog />
             </Grid>
-            <Grid>
+            <Grid item xs={1}>
                 <Tooltip title="Close">
-                    <IconButton>
-                        <CloseIcon />
+                    <IconButton ClassName= "rechts" href="/dashboard">
+                        <CloseIcon/>
                     </IconButton>
                 </Tooltip>
 
