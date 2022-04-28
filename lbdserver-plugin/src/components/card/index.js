@@ -105,7 +105,7 @@ export default function BasicCard({project}) {
         </CardActionArea>
         <CardActions>
           <Box style={{ flex: 1 }}>
-            <Button href="/documentation">
+            <Button href="/projectpage">
               Learn more
             </Button>
           </Box>
