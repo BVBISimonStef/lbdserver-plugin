@@ -62,6 +62,9 @@ module.exports = {
       querystring: require.resolve("querystring-es3"),
       tls: require.resolve("tls-browserify"),
       net: require.resolve("net-browserify"),
+      vm: require.resolve("vm-browserify"),
+      constants: require.resolve("constants-browserify"),
+      tty: require.resolve("tty-browserify"),
       "child_process": false,
       "dns": false,
       "http2": false

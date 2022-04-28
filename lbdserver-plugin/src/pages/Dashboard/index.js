@@ -6,13 +6,31 @@ import BasicCard from '../../components/card';
 import SearchBar from '../../components/searchBar';
 import Sort from '../../components/sort';
 import Grid from '@mui/material/Grid';
+import { sessionTrigger as s, propagate } from '../../atoms';
+import {useRecoilValue, useRecoilState} from 'recoil'
+import { getAuthentication } from "../../components/login/functions";
 
 const DashboardPage = () => {
   const [projects, setProjects] = useState([])
+    const trigger = useRecoilValue(s)
+    const [update, setUpdate] = useRecoilState(propagate)
+
+    // useEffect(() => {
+    //   getAuthentication().then(() => {
+    //     setUpdate(v4())
+    //   }).catch((error) => {
+    //     console.log('error', error)
+    //     // window.location = window.location.pathname
+    //   })
+    // }, [trigger])
 
     useEffect(() => {
+      if (getDefaultSession().info.isLoggedIn) {
         getProjects()
-    }, [])
+      }
+
+
+    }, [update])
 
     async function getProjects() {
       try {
@@ -23,6 +41,7 @@ const DashboardPage = () => {
               endpoint = await myService.getProjectRegistry(getDefaultSession().info.webId)
           }
           const myProjects = await myService.getAllProjects(endpoint)
+          console.log(myProjects)
           setProjects(p => myProjects)
           return myProjects
       } catch (error) {
