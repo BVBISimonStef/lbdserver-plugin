@@ -10,9 +10,9 @@ import { LbdProject, LbdService } from "lbdserver-client-api"
 import { AGGREGATOR_ENDPOINT } from '../../../constants';
 import { extract } from '../../../util/functions';
 import { DCTERMS, LDP, RDFS } from '@inrupt/vocab-common-rdf'
-import Errormessage from '../../../components/errormessage';
 import { ids } from 'webpack';
 import { truncate } from 'lodash';
+import { selectedGridRowsCountSelector } from '@mui/x-data-grid';
 
 export default function CreateProject(props) {
     const { open, title, description, Child, childProps } = props
@@ -30,7 +30,7 @@ export default function CreateProject(props) {
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
     const [id, setId] = useState(v4())
-    const [foutmelding,setFoutmelding] = useState(false)
+    const [foutmelding,setFoutmelding] = useState(true)
     async function createProject() {
         try {
             setLoading(true)
@@ -43,16 +43,18 @@ export default function CreateProject(props) {
             if (year === "" || name === "" || country === "" || city === "" || status === "" || role === "") {
                 setError(true)
                 setLoading(false)
+                setFoutmelding("")
             } else {
                 await myProject.create([], { [RDFS.label]: name, "http://www.w3.org/2006/time#year": year, "http://dbpedia.org/ontology/country": country, "http://dbpedia.org/ontology/city": city, "http://dbpedia.org/ontology/currentStatus": status, "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#Role": role, "http://id": id }, true)
                 setProject(myProject)
                 setSuccess(true)
                 setLoading(false)
+                setFoutmelding(true)
             }
 
         } catch (error) {
             console.log('error', error)
-            setError(error)
+            setError(true)
             setLoading(false)
         }
 
@@ -74,8 +76,8 @@ export default function CreateProject(props) {
                     onChange={(e) => setName(e.target.value)}
                     autoFocus
                     disabled={loading}
-                    error={name === ""}
-                    helperText={name  === "" ? 'Empty field!' : ' '}
+                    error={foutmelding === "" && name === ""}
+                    helperText={foutmelding  === "" && name === "" ? 'Empty field!' : ' '}
         
                 />
                 <TextField
@@ -98,8 +100,8 @@ export default function CreateProject(props) {
                     onChange={(e) => setCountry(e.target.value)}
                     autoFocus
                     disabled={loading}
-                    error={country === ""}
-                    helperText={country  === "" ? 'Empty field!' : ' '}
+                    error={foutmelding === ""&& country === ""}
+                    helperText={foutmelding === "" && country === "" ? 'Empty field!' : ' '}
                 />
                 <TextField
                     id="city"
@@ -109,8 +111,8 @@ export default function CreateProject(props) {
                     onChange={(e) => setCity(e.target.value)}
                     autoFocus
                     disabled={loading}
-                    error={city === ""}
-                    helperText={city  === "" ? 'Empty field!' : ' '}
+                    error={foutmelding === "" && city === ""}
+                    helperText={foutmelding  === "" && city === "" ? 'Empty field!' : ' '}
                 />
                 <TextField
                     id="status"
@@ -121,8 +123,8 @@ export default function CreateProject(props) {
                     onChange={(e) => setStatus(e.target.value)}
                     autoFocus
                     disabled={loading}
-                    error={status === ""}
-                    helperText={status  === "" ? 'Empty field!' : ' '}
+                    error={foutmelding === "" && status === ""}
+                    helperText={foutmelding  === "" && status === "" ? 'Empty field!' : ' '}
                 />
                 <TextField
                     id="projectYear"
@@ -133,8 +135,8 @@ export default function CreateProject(props) {
                     onChange={(e) => setYear(e.target.value)}
                     autoFocus
                     disabled={loading}
-                    error={year === ""}
-                    helperText={year  === "" ? 'Empty field!' : ' '}
+                    error={foutmelding === "" && year === ""}
+                    helperText={foutmelding  === "" && year === "" ? 'Empty field!' : ' '}
                 />
                 <TextField
                     id="role"
@@ -145,17 +147,18 @@ export default function CreateProject(props) {
                     onChange={(e) => setRole(e.target.value)}
                     autoFocus
                     disabled={loading}
-                    error={role === ""}
-                    helperText={role  === "" ? 'Empty field!' : ' '}
+                    error={foutmelding === "" && role === ""}
+                    helperText={foutmelding  === "" && role === "" ? 'Empty field!' : ' '}
                 />
-            <Errormessage foutmelding = {foutmelding}/>
-            <Button style={{marginTop: 10, width: "200"}} variant="contained" onClick={createProject}>Create Project</Button>
-            {error ? (
-                <Alert onClose={() => setError(null)} severity="error">{error.message}</Alert>
+            
+            {error ? ( 
+                <Alert onClose={() => setError(null)} severity="error">Fill in all fields!</Alert>
             ) : (<React.Fragment/>)}
                         {success ? (
                 <Alert onClose={() => setSuccess(null)} severity="success">Your project was successfully created and is now the Active Project</Alert>
             ) : (<React.Fragment/>)}
+            <Button style={{marginTop: 10, width: "200"}} variant="contained" onClick={createProject}>Create Project</Button>
+
             </div>
         ) : (
             <div style={{ marginTop: 30 }}>
