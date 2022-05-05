@@ -21,7 +21,7 @@ const ProjectPage = () => {
             </Grid>
             <Grid item xs={1}>
                 <Tooltip title="Close">
-                    <IconButton ClassName= "rechts" href="/dashboard">
+                    <IconButton href="/dashboard">
                         <CloseIcon/>
                     </IconButton>
                 </Tooltip>

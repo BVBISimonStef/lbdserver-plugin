@@ -47,7 +47,7 @@ function App() {
     { label: "enrichment", path: "/enrichment", component: Enrichment, props: {} },
     // { label: "project", path: "/project", component: Project, props: {} }
     { label: "dashboard", path: "/dashboard", component: DashboardPage, props: {} },
-    { label: "projectpage", path: "/projectpage", component: ProjectPage, props: {} }
+    {path: "/projectpage", component: ProjectPage, props: {} }
   ]
 
   useEffect(() => {
