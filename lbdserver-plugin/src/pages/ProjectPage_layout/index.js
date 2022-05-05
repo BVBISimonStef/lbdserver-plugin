@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
- 
+import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import BasicTabs from '../Documentation/Dialogs/BasicTabs';
 import Divider from '@mui/material/Divider';
@@ -16,13 +16,18 @@ import {LbdProject } from 'lbdserver-client-api'
 
 
 const ProjectPage = () => {
-    const [metadata, setMetadata] = useState({})
+  const [metadata, setMetadata] = useState({})
   const [project, setProject] = useRecoilState(p)
   
   useEffect(() => {
     getProjectData()
     console.log('project', project)
   }, [])
+
+  let navigate = useNavigate();
+  function handleClick() {
+    navigate("/dashboard")
+  }
 
   async function getProjectData() {
       // https://comunica.dev/
@@ -64,8 +69,8 @@ const ProjectPage = () => {
             </Grid>
             <Grid item xs={1} container justify="flex-end">
                 <Tooltip title="Close">
-                    <IconButton href="/dashboard">
-                        <CloseIcon/>
+                    <IconButton>
+                        <CloseIcon onClick={() => handleClick()}/>
                     </IconButton>
                 </Tooltip>
 

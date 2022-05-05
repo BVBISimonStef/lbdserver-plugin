@@ -15,21 +15,10 @@ const DashboardPage = () => {
     const trigger = useRecoilValue(s)
     const [update, setUpdate] = useRecoilState(propagate)
 
-    // useEffect(() => {
-    //   getAuthentication().then(() => {
-    //     setUpdate(v4())
-    //   }).catch((error) => {
-    //     console.log('error', error)
-    //     // window.location = window.location.pathname
-    //   })
-    // }, [trigger])
-
     useEffect(() => {
       if (getDefaultSession().info.isLoggedIn) {
         getProjects()
       }
-
-
     }, [update])
 
     async function getProjects() {

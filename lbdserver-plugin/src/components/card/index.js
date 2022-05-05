@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -12,6 +13,7 @@ import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
 import {LbdProject } from 'lbdserver-client-api'
 import { project as p } from "../../atoms"
 import {useRecoilState} from 'recoil'
+
 
 export default function BasicCard({project}) {
   const [metadata, setMetadata] = useState({})
@@ -51,13 +53,16 @@ export default function BasicCard({project}) {
           setMetadata(myMetadata);;
       })
   }
+
+  let navigate = useNavigate();
+
   async function setActiveProject() {
     const theProject = new LbdProject(getDefaultSession(), project)
     await theProject.init()
     setProject(theProject)
     console.log(theProject)
-    // redirect to project page
-
+    let path = "/projectpage"
+    navigate(path);
 }
 
   // if (Object.values(metadata).includes("Bim Coordinator")) {
