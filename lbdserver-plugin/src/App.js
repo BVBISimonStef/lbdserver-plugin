@@ -40,7 +40,6 @@ function App() {
   const config = useRecoilValue(conf)
   const [update, setUpdate] = useRecoilState(propagate)
   const [project, setProject] = useRecoilState(p)
-  console.log('project', project)
   let pages;
 
   if (project == null) {
