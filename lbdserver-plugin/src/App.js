@@ -26,6 +26,7 @@ import Enrichment from './pages/Enrichment'
 import creds from '../devCredentials'
 import DashboardPage from './pages/Dashboard'
 import ProjectPage from './pages/ProjectPage'
+import { project as p } from "./atoms"
 
 import {Store} from 'n3'
 
@@ -39,16 +40,21 @@ function App() {
   const [trigger, setTrigger] = useRecoilState(t)
   const config = useRecoilValue(conf)
   const [update, setUpdate] = useRecoilState(propagate)
+  const [project, setProject] = useRecoilState(p)
+  let pages;
 
-  const pages = [
-    {label: "demo", path: "/", component: DemoPage, props: {}},
-    // { label: "experimental", path: "/", component: Project, props: { initialLayout: config } },
-    { label: "documentation", path: "/documentation", component: SdkDemo, props: {} },
-    { label: "enrichment", path: "/enrichment", component: Enrichment, props: {} },
-    // { label: "project", path: "/project", component: Project, props: {} }
-    { label: "dashboard", path: "/dashboard", component: DashboardPage, props: {} },
-    { label: "projectpage", path: "/projectpage", component: ProjectPage, props: {} }
-  ]
+  if (project == null) {
+    pages = [
+      {label: "demo", path: "/", component: DemoPage, props: {}},
+      {label: "dashboard", path: "/dashboard", component: DashboardPage, props: {} }
+    ] 
+  } else {
+    pages = [
+      {label: "demo", path: "/", component: DemoPage, props: {}},
+      {label: "dashboard", path: "/dashboard", component: DashboardPage, props: {} },
+      {label: "projectpage", path: "/projectpage", component: ProjectPage, props: {} }
+    ] 
+  }
 
   useEffect(() => {
     getAuthentication().then(() => {
