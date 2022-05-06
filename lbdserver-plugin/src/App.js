@@ -25,7 +25,7 @@ import DemoPage from './pages/DemoPage'
 import Enrichment from './pages/Enrichment'
 import creds from '../devCredentials'
 import DashboardPage from './pages/Dashboard'
-import ProjectPage from './pages/ProjectPage_layout'
+import ProjectPage from './pages/ProjectPage'
 
 import {Store} from 'n3'
 
