@@ -10,6 +10,8 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { project as p } from "../../atoms"
 import { newEngine } from '@comunica/actor-init-sparql'
 import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
+import GetAllDatasets from '../Datasets/GetDataset';
+import AlignDistributions from '../Datasets/AlignDatasets';
 
 export default function Info() {
     const [metadata, setMetadata] = useState({})
@@ -56,44 +58,38 @@ export default function Info() {
             <Typography variant='h5'>
                 {metadata.label}
             </Typography>
-            <Typography sx={{ fontSize: 18 }} color='#9e9e9e'>
+            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                 Starting Year
             </Typography>
             <Typography>
                 {metadata.year}
             </Typography>
-            <Typography sx={{ fontSize: 18 }} color='#9e9e9e'>
+            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                 Status
             </Typography>
             <Typography>
                 {metadata.currentStatus}
             </Typography>
-            <Typography sx={{ fontSize: 18 }} color='#9e9e9e'>
+            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                 Location
             </Typography>
             <Typography>
                 {metadata.city}, {metadata.country}
             </Typography>
-            <Typography sx={{ fontSize: 18 }} color='#9e9e9e'>
+            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                 Role
             </Typography>
             <Typography>
                 {metadata.role}
             </Typography>
-            <Typography sx={{ fontSize: 18 }} color='#9e9e9e'>
+            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                 Datasets
             </Typography>
-            <FormControl>
-                <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="MyDataset1"
-                    name="datasetbuttons"
-                >
-                    <FormControlLabel value="MyDataset1" control={<Radio />} label="MyDataset1" />
-                    <FormControlLabel value="MyDataset2" control={<Radio />} label="MyDataset2" />
-                    <FormControlLabel value="MyDataset3" control={<Radio />} label="MyDataset3" />
-                </RadioGroup>
-            </FormControl>
+            <GetAllDatasets/>
+            <AlignDistributions/>
+            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
+                Issues
+            </Typography>
         </div>
     );
 }
