@@ -12,32 +12,44 @@ import { getAuthentication } from "../../components/login/functions";
 
 const DashboardPage = () => {
   const [projects, setProjects] = useState([])
-    const trigger = useRecoilValue(s)
-    const [update, setUpdate] = useRecoilState(propagate)
+  const trigger = useRecoilValue(s)
+  const [update, setUpdate] = useRecoilState(propagate)
+  let results = []
 
-    useEffect(() => {
-      if (getDefaultSession().info.isLoggedIn) {
-        getProjects()
-      }
-    }, [update])
-
-    async function getProjects() {
-      try {
-          var myService = new LbdService(getDefaultSession())
-
-          let endpoint
-          if (getDefaultSession().info.isLoggedIn) {
-              endpoint = await myService.getProjectRegistry(getDefaultSession().info.webId)
-          }
-          const myProjects = await myService.getAllProjects(endpoint)
-          console.log(myProjects)
-          setProjects(p => myProjects)
-          return myProjects
-      } catch (error) {
-          console.log('error', error);
-      }
+  useEffect(() => {
+    if (getDefaultSession().info.isLoggedIn) {
+      getProjects()
     }
+  }, [update])
+
+  async function getProjects() {
+    try {
+        var myService = new LbdService(getDefaultSession())
+
+        let endpoint
+        if (getDefaultSession().info.isLoggedIn) {
+            endpoint = await myService.getProjectRegistry(getDefaultSession().info.webId)
+        }
+        const myProjects = await myService.getAllProjects(endpoint);
+        console.log('projects', myProjects);
+        for (const project in myProjects) {
+          console.log('project', `${project}: ${myProjects[project]}`);
+          results.push(await getDefaultSession().fetch(myProjects[project], {
+            headers: {
+              "Accept":"application/ld+json"
+            }
+          }).then(i => i.json()))
+        }
+        setProjects(p => myProjects)
+        console.log(results[0])
+        return myProjects
+    } catch (error) {
+        console.log('error', error);
+    }
+  }
   
+
+
   return (
     <Grid container spacing={3} sx={{p: 3}}>
       <Grid item lg={4} md={6} sm={6} xs={12}>  
@@ -52,8 +64,8 @@ const DashboardPage = () => {
          <Sort/>
       </Grid>
       {projects.map((project) => (
-        <Grid item lg={3} md={4} sm={6} xs={12}>
-          <BasicCard key={project} project={project}/>
+        <Grid key={project} item lg={3} md={4} sm={6} xs={12}>
+          <BasicCard project={project}/>
         </Grid>
       ))}
     </Grid>
