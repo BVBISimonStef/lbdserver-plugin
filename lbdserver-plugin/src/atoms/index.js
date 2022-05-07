@@ -32,6 +32,16 @@ const selectedElements = atom({
   key: "selectedElements",
   default: []
 })
+
+const sorter = atom({
+  key: "sorter",
+  default: "-year"
+})
+
+const searcher = atom({
+  key: "searcher",
+  default: ""
+})
   
 // const session = atom({
 //   key: "session",
@@ -39,4 +49,4 @@ const selectedElements = atom({
 // })
 
 
-export {sessionTrigger, loadedParcels, project, propagate, datasets, selectedElements}
+export {sessionTrigger, loadedParcels, project, propagate, datasets, selectedElements, sorter, searcher}
