@@ -28,40 +28,56 @@ export default function GetAllDatasets(props: any) {
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
     const [datasets, setDatasets] = useRecoilState(d)
+    const [empty, setEmpty] = useState(true)
 
     async function getAllDatasets() {
-        const allDatasets = await project.getAllDatasetUrls()
-        const loaded = {}
-        for (const ds of allDatasets) {
-            const myDs = new LbdDataset(getDefaultSession(), ds)
-            await myDs.init()
-            loaded[ds] = { dataset: myDs, active: false }
+        try {
+            setLoading(true)
+            const allDatasets = await project.getAllDatasetUrls()
+            const loaded = {}
+            for (const ds of allDatasets) {
+                const myDs = new LbdDataset(getDefaultSession(), ds)
+                await myDs.init()
+                loaded[ds] = { dataset: myDs, active: false }
+            }
+            setDatasets(loaded)
+        } catch (error) {
+            setError(error)
+            setLoading(false)
         }
-        setDatasets(loaded)
     }
+
+
+    useEffect(() => {
+        getAllDatasets()
+        console.log('succes')
+    }, [])
+
+    //if (Object.keys(datasets).length === 0) {
+    //    setEmpty(true)
+    //}
 
     return <div>
         <Typography>{description}</Typography>
-        {project ? (
+        {empty ? (
             <div>
-                <Button variant="outlined" onClick={getAllDatasets}>Get Datasets</Button>
                 <FormGroup>
                     {Object.keys(datasets).map(ds => {
-                        return <DatasetInfo key={ds} dataset={datasets[ds]}/>
+                        return <DatasetInfo key={ds} dataset={datasets[ds]} />
                     })}
                 </FormGroup>
             </div>
         ) : (
-            <Typography></Typography>
+            <Typography>No datasets</Typography>
         )}
     </div>
 };
 
 
-function DatasetInfo(props: {dataset: {dataset: InstanceType<typeof LbdDataset>, active: boolean}}) {
+function DatasetInfo(props: { dataset: { dataset: InstanceType<typeof LbdDataset>, active: boolean } }) {
     const [datasets, setDatasets] = useRecoilState(d)
 
-    const {dataset, active} = props.dataset
+    const { dataset, active } = props.dataset
 
     function makeLabel() {
         const label = extract(dataset.data, dataset.url)[RDFS.label][0]["@value"]
@@ -71,7 +87,7 @@ function DatasetInfo(props: {dataset: {dataset: InstanceType<typeof LbdDataset>,
     }
 
     function toggleDatasetState() {
-        setDatasets({...datasets, [dataset.url]: {dataset, active: !active}})
+        setDatasets({ ...datasets, [dataset.url]: { dataset, active: !active } })
     }
     return <FormControlLabel onChange={toggleDatasetState} control={<Checkbox checked={active} />} label={makeLabel()} />
 }

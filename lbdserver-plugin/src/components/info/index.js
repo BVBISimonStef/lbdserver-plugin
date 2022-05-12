@@ -1,21 +1,24 @@
-import { Typography } from '@mui/material';
-import React, {useEffect, useState} from 'react';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import CloseIcon from '@mui/icons-material/Close';
+import { Typography, Grid, IconButton, Tooltip } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { project as p } from "../../atoms"
 import { newEngine } from '@comunica/actor-init-sparql'
 import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
 import GetAllDatasets from '../Datasets/GetDataset';
 import AlignDistributions from '../Datasets/AlignDatasets';
+import Divider from '@mui/material/Divider';
+import { useNavigate } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
+import CreateDataset from '../Datasets/CreateDatasets';
 
 export default function Info() {
     const [metadata, setMetadata] = useState({})
     const [project, setProject] = useRecoilState(p)
+
+    let navigate = useNavigate();
+    function handleClick() {
+        navigate("/dashboard")
+    }
 
     useEffect(() => {
         getProjectData()
@@ -55,38 +58,55 @@ export default function Info() {
 
     return (
         <div>
-            <Typography variant='h5'>
+            <Tooltip title="Close">
+                <IconButton onClick={() => handleClick()} style={{ float: "right" }}>
+                    <CloseIcon />
+                </IconButton>
+            </Tooltip>
+            <Typography variant="h4">
                 {metadata.label}
             </Typography>
-            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
-                Starting Year
-            </Typography>
-            <Typography>
-                {metadata.year}
-            </Typography>
-            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
-                Status
-            </Typography>
-            <Typography>
-                {metadata.currentStatus}
-            </Typography>
-            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
-                Location
-            </Typography>
-            <Typography>
-                {metadata.city}, {metadata.country}
-            </Typography>
-            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
-                Role
-            </Typography>
-            <Typography>
-                {metadata.role}
-            </Typography>
-            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
+            <Divider sx={{ my: 2 }} />
+            <Grid container>
+                <Grid item xs={6} sx={{mb: 1}}>
+                    <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
+                        Starting Year
+                    </Typography>
+                    <Typography>
+                        {metadata.year}
+                    </Typography>
+                </Grid>
+                <Grid item xs={6} sx={{mb: 1}}>
+                    <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
+                        Status
+                    </Typography>
+                    <Typography>
+                        {metadata.currentStatus}
+                    </Typography>
+                </Grid>
+                <Grid item xs={6} sx={{mb: 1}}>
+                    <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
+                        Location
+                    </Typography>
+                    <Typography>
+                        {metadata.city}, {metadata.country}
+                    </Typography>
+                </Grid>
+                <Grid item xs={6} sx={{mb: 1}}>
+                    <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
+                        Role
+                    </Typography>
+                    <Typography>
+                        {metadata.role}
+                    </Typography>
+                </Grid>
+            </Grid>
+            <Typography sx={{ fontSize: 20, mb: 1}} color='#9e9e9e'>
                 Datasets
             </Typography>
-            <GetAllDatasets/>
-            <AlignDistributions/>
+            <GetAllDatasets />
+            <CreateDataset/>
+            {/* <AlignDistributions /> */}
             <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                 Issues
             </Typography>
