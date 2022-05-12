@@ -4,18 +4,20 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Box, CardHeader, IconButton } from '@mui/material';
+import { Box, CardHeader, IconButton, Tooltip } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
 import { LbdProject } from 'lbdserver-client-api'
-import { project as p } from "../../atoms"
+import { project as p, trigger as t} from "../../atoms"
 import { useRecoilState } from 'recoil'
+import {v4} from "uuid"
 
 
 export default function BasicCard({ location, label, year, country, city, currentStatus, id, role }) {
   const [full, setProject] = useRecoilState(p)
+  const [trigger, setTrigger] = useRecoilState(t)
 
   let navigate = useNavigate();
 
@@ -26,6 +28,13 @@ export default function BasicCard({ location, label, year, country, city, curren
     console.log(theProject)
     let path = "/projectpage"
     navigate(path);
+  }
+
+  async function handleClick() {
+    const theProject = new LbdProject(getDefaultSession(), location)
+    await theProject.init()
+    await theProject.delete()
+    setTrigger(v4())
   }
 
   return (
@@ -83,9 +92,11 @@ export default function BasicCard({ location, label, year, country, city, curren
         <Box style={{ flex: 1 }}>
           <Button onClick={() => setActiveProject()}>Learn More</Button>
         </Box>
-        <IconButton>
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Delete project">
+          <IconButton onClick={() => handleClick()}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       </CardActions>
     </Card>
   );

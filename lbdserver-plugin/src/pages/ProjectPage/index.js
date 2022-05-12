@@ -5,7 +5,6 @@ import Info from '../../components/info';
 import FormDialog from '../../components/issuemngmt';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton, Tooltip } from '@mui/material';
-import GetAllDatasets from '../../components/Datasets/GetDataset';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -17,7 +16,7 @@ const ProjectPage = () => {
             </Grid>
             <Grid item xs={4}>
                 <Info />
-                <FormDialog />
+                {/* <FormDialog /> */}
             </Grid>
         </Grid >
 

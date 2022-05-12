@@ -6,13 +6,13 @@ import BasicCard from '../../components/card';
 import SearchBar from '../../components/searchBar';
 import Sort from '../../components/sort';
 import Grid from '@mui/material/Grid';
-import { sessionTrigger as s, propagate, sorter, searcher } from '../../atoms';
+import { trigger as t, propagate, sorter, searcher } from '../../atoms';
 import {useRecoilValue, useRecoilState} from 'recoil'
 import { newEngine } from '@comunica/actor-init-sparql'
 
 const DashboardPage = () => {
   const [projects, setProjects] = useState([])
-  const trigger = useRecoilValue(s)
+  const [trigger, setTrigger] = useRecoilValue(t)
   const [update, setUpdate] = useRecoilState(propagate)
   const [search, setSearch] = useRecoilState(searcher)
   const [sort, setSort] = useRecoilState(sorter)
@@ -22,7 +22,7 @@ const DashboardPage = () => {
     if (getDefaultSession().info.isLoggedIn) {
       getProjects()
     }
-  }, [update, sort, search])
+  }, [update, sort, search, trigger])
 
   async function getProjects() {
     try {

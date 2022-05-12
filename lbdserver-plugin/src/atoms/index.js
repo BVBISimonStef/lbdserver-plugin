@@ -42,11 +42,15 @@ const searcher = atom({
   key: "searcher",
   default: ""
 })
-  
+
+const trigger = atom({
+  key: "trigger",
+  default: v4()
+})  
 // const session = atom({
 //   key: "session",
 //   default: new Session()
 // })
 
 
-export {sessionTrigger, loadedParcels, project, propagate, datasets, selectedElements, sorter, searcher}
+export {sessionTrigger, loadedParcels, project, propagate, datasets, selectedElements, sorter, searcher, trigger}
