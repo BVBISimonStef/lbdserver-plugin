@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { TextField, Button, Typography, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel, Alert } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { project as p } from "../../atoms"
+import { project as p, trigger as t } from "../../atoms"
 import { AGGREGATOR_ENDPOINT } from '../../constants';
 import { DCTERMS, LDP, RDFS } from '@inrupt/vocab-common-rdf'
+import {v4} from 'uuid'
 
 const Input = styled('input')({
     display: 'none',
@@ -13,6 +14,7 @@ const Input = styled('input')({
 export default function CreateDataset(props) {
     const { open, title, description, Child, childProps } = props
     const [project, setProject] = useRecoilState(p)
+    const [trigger, setTrigger] = useRecoilState(t)
     const [aggregator, setAggregator] = useState(AGGREGATOR_ENDPOINT)
     const [projects, setProjects] = useState([])
     const [error, setError] = useState(null)
@@ -35,6 +37,7 @@ export default function CreateDataset(props) {
             setSuccess(true)
             setFile(null)
             setLoading(false)
+            setTrigger(v4())
         } catch (error) {
             setError(error)
             setFile(null)
