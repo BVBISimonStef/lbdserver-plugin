@@ -45,7 +45,7 @@ function App() {
 
   if (project == null) {
     pages = [
-      {label: "demo", path: "/", component: DemoPage, props: {}},
+      {label: "Create Project", path: "/", component: DemoPage, props: {}},
       {label: "dashboard", path: "/dashboard", component: DashboardPage, props: {} }
     ] 
   } else {

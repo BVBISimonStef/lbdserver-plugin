@@ -84,7 +84,7 @@ export default function CreateDataset(props) {
     }
 
     return <div>
-        <Button variant="outlined" onClick={handleClickOpen}>
+        <Button variant="outlined" onClick={handleClickOpen} sx={{my: 3}}>
             Create Dataset
         </Button>
         <Dialog open={openform} onClose={handleClose}>
@@ -155,12 +155,12 @@ export default function CreateDataset(props) {
                 <Button style={{ margin: 10, width: "200" }} variant="contained" onClick={createDataset} disabled={loading || !file}>Create Dataset</Button>
                 <Button style={{ margin: 10, width: "200" }} variant="contained" onClick={createEmptyDataset} disabled={loading}>Create Empty Dataset</Button>
             </DialogActions>
-            <DialogActions>
+            <DialogActions style={{ justifyContent: "space-between" }}>
                 {error ? (
-                    <Alert onClose={() => setError(null)} severity="error">Fill in label!</Alert>
+                    <Alert sx={{width: "100%"}} onClose={() => setError(null)} severity="error">Fill in label!</Alert>
                 ) : (<React.Fragment />)}
                 {success ? (
-                    <Alert onClose={() => setSuccess(null)} severity="success">Your dataset was successfully created.</Alert>
+                    <Alert sx={{width: "100%"}} onClose={() => setSuccess(null)} severity="success">Your dataset was successfully created.</Alert>
                 ) : (<React.Fragment />)}
             </DialogActions>
         </Dialog>

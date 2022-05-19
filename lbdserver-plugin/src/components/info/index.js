@@ -102,7 +102,7 @@ export default function Info() {
             <Typography sx={{ fontSize: 20, mb: 1}} color='#9e9e9e'>
                 Datasets
             </Typography>
-            <GetAllDatasets />
+            <GetAllDatasets/>
             <CreateDataset/>
         </div>
     );

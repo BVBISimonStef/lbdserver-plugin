@@ -14,7 +14,7 @@ const ProjectPage = () => {
     });
 
 
-    if (windowsize > 960) {
+    if (windowsize > 650) {
         return (
             <Grid container spacing={3} sx={{ p: 3 }}>
                 <Grid item xs={8}>

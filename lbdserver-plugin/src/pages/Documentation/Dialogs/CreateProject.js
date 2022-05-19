@@ -155,7 +155,7 @@ export default function CreateProject(props) {
             </div>
         ) : (
             <div style={{ marginTop: 30 }}>
-                <Typography>You are not authenticated. You will not be able to create a project.</Typography>
+                <Typography>You are not authenticated. Login to create a project.</Typography>
             </div>
         )}
     </div>
