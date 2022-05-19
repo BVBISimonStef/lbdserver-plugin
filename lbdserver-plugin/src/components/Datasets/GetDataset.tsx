@@ -46,15 +46,9 @@ export default function GetAllDatasets(props: any) {
     }
 
     useEffect(() => {
-        console.log(trigger)
-        getAllDatasets().then(i => {
-            console.log('succes',datasets)
-        })
+        getAllDatasets()
     }, [trigger])
 
-    useEffect(() => {
-        console.log('dataset', datasets)
-    }, [datasets])
 
     if (Object.keys(datasets).length != 0) {
         return <div key={trigger}>

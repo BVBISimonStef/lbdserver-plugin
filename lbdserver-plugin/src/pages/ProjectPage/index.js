@@ -2,25 +2,40 @@ import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import BasicTabs from '../Documentation/Dialogs/BasicTabs';
 import Info from '../../components/info';
-import FormDialog from '../../components/issuemngmt';
-import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Tooltip } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import '../../App.css'
+import $ from "jquery";
 
 
 const ProjectPage = () => {
-    return (
-        <Grid container spacing={3} sx={{ p: 3 }}>
-            <Grid item xs={8}>
-                <BasicTabs title={"Scroll through the enrichment modules, visualise and query the project."} />
-            </Grid>
-            <Grid item xs={4}>
-                <Info />
-                {/* <FormDialog /> */}
-            </Grid>
-        </Grid >
+    var [windowsize, setWindowsize] = useState($(window).width())
+    $(window).resize(function () {
+        setWindowsize($(window).width())
+    });
 
-    );
+
+    if (windowsize > 960) {
+        return (
+            <Grid container spacing={3} sx={{ p: 3 }}>
+                <Grid item xs={8}>
+                    <BasicTabs title={"Scroll through the enrichment modules, visualise and query the project."} />
+                </Grid>
+                <Grid item xs={4}>
+                    <Info />
+                </Grid>
+            </Grid >
+        );
+    } else {
+        return (
+            <Grid container spacing={3} sx={{ p: 3 }}>
+                <Grid item xs={12}>
+                    <Info />
+                </Grid>
+                <Grid item xs={12}>
+                    <BasicTabs title={"Scroll through the enrichment modules, visualise and query the project."} />
+                </Grid>
+            </Grid >
+        );
+    }
 }
 
 

@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Button, Typography, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel, Alert } from '@mui/material'
-import { useTheme } from '@mui/material/styles';
 import { getDefaultSession, login, Session } from '@inrupt/solid-client-authn-browser';
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { project as p } from "../../../atoms"
 import { v4 } from "uuid"
-import DialogTemplate from './DialogTemplate';
 import { LbdProject, LbdService } from "lbdserver-client-api"
 import { AGGREGATOR_ENDPOINT } from '../../../constants';
-import { extract } from '../../../util/functions';
-import { DCTERMS, LDP, RDFS } from '@inrupt/vocab-common-rdf'
-import { ids } from 'webpack';
-import { truncate } from 'lodash';
-import { selectedGridRowsCountSelector } from '@mui/x-data-grid';
+import { RDFS } from '@inrupt/vocab-common-rdf'
 
 export default function CreateProject(props) {
     const { open, title, description, Child, childProps } = props
@@ -49,7 +43,6 @@ export default function CreateProject(props) {
                 setProject(myProject)
                 setSuccess(true)
                 setLoading(false)
-                setFoutmelding(true)
             }
 
         } catch (error) {

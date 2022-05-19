@@ -5,7 +5,6 @@ import { project as p } from "../../atoms"
 import { newEngine } from '@comunica/actor-init-sparql'
 import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
 import GetAllDatasets from '../Datasets/GetDataset';
-import AlignDistributions from '../Datasets/AlignDatasets';
 import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
@@ -68,7 +67,7 @@ export default function Info() {
             </Typography>
             <Divider sx={{ my: 2 }} />
             <Grid container>
-                <Grid item xs={6} sx={{mb: 1}}>
+                <Grid item md={6} xs={12} sx={{mb: 1}}>
                     <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                         Starting Year
                     </Typography>
@@ -76,7 +75,7 @@ export default function Info() {
                         {metadata.year}
                     </Typography>
                 </Grid>
-                <Grid item xs={6} sx={{mb: 1}}>
+                <Grid item md={6} xs={12} sx={{mb: 1}}>
                     <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                         Status
                     </Typography>
@@ -84,7 +83,7 @@ export default function Info() {
                         {metadata.currentStatus}
                     </Typography>
                 </Grid>
-                <Grid item xs={6} sx={{mb: 1}}>
+                <Grid item md={6} xs={12} sx={{mb: 1}}>
                     <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                         Location
                     </Typography>
@@ -92,7 +91,7 @@ export default function Info() {
                         {metadata.city}, {metadata.country}
                     </Typography>
                 </Grid>
-                <Grid item xs={6} sx={{mb: 1}}>
+                <Grid item md={6} xs={12} sx={{mb: 1}}>
                     <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                         Role
                     </Typography>
@@ -106,10 +105,6 @@ export default function Info() {
             </Typography>
             <GetAllDatasets />
             <CreateDataset/>
-            {/* <AlignDistributions /> */}
-            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
-                Issues
-            </Typography>
         </div>
     );
 }
