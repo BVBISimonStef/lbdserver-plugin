@@ -25,7 +25,6 @@ export default function BasicCard({ location, label, year, country, city, curren
     const theProject = new LbdProject(getDefaultSession(), location)
     await theProject.init()
     setProject(theProject)
-    console.log(theProject)
     let path = "/projectpage"
     navigate(path);
   }

@@ -65,7 +65,7 @@ const DashboardPage = () => {
             }
           })
         }
-        console.log(metadata)
+        console.log('Projects Array',metadata)
         setProjects(metadata.sort(dynamicSort(sort)))
         return metadata
     } catch (error) {

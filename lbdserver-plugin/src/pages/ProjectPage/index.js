@@ -6,6 +6,7 @@ import '../../App.css'
 import $ from "jquery";
 
 
+
 const ProjectPage = () => {
     var [windowsize, setWindowsize] = useState($(window).width())
     $(window).resize(function () {

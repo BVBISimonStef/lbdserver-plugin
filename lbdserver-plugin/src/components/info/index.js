@@ -1,6 +1,6 @@
 import { Typography, Grid, IconButton, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { project as p } from "../../atoms"
 import { newEngine } from '@comunica/actor-init-sparql'
 import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
@@ -21,7 +21,6 @@ export default function Info() {
 
     useEffect(() => {
         getProjectData()
-        console.log('project', project)
     }, [])
 
     async function getProjectData() {
