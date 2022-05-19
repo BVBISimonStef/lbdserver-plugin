@@ -13,22 +13,7 @@ const DemoPage = () => {
             <Grid item xs={1} sm={1} md={2} />
             <Grid item xs={4} sm={6} md={8} >
                 <div style={subComponentStyle}>
-                    <CreateProject title={"1. (optional) create a project (login required)"} />
-                </div>
-                <div style={subComponentStyle}>
-                    <GetProjects style={subComponentStyle} title={"2. Get available projects for this aggregator"} />
-                </div>
-                <div style={subComponentStyle}>
-                    <CreateDataset style={subComponentStyle} title={"3. Upload Datasets to this project"} />
-                </div>
-                <div style={subComponentStyle}>
-                    <GetAllDatasets style={subComponentStyle} title={"4. Activate Datasets of this project"} />
-                </div>
-                <div style={subComponentStyle}>
-                    <AlignDistributions style={subComponentStyle} title={"5. Align datasets and create abstract concepts"} />
-                </div>
-                <div style={subComponentStyle}>
-                    <BasicTabs title={"6. Scroll through the enrichment modules, visualise and query the project."}/>
+                    <CreateProject title={"Create a project (login required)"} />
                 </div>
             </Grid>
             <Grid item xs={0} sm={2} md={3} />
@@ -36,6 +21,6 @@ const DemoPage = () => {
     )
 }
 
-const subComponentStyle = { marginTop: 30, border: "2px solid gray", borderRadius: 15, padding: 15}
+const subComponentStyle = { marginTop: 30, borderRadius: 15, padding: 15}
 
 export default DemoPage
