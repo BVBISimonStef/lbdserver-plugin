@@ -66,7 +66,7 @@ export default function Info() {
             </Typography>
             <Divider sx={{ my: 2 }} />
             <Grid container>
-                <Grid item xs={6} sx={{mb: 1}}>
+                <Grid item md={6} xs={12} sx={{mb: 1}}>
                     <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                         Starting Year
                     </Typography>
@@ -74,7 +74,7 @@ export default function Info() {
                         {metadata.year}
                     </Typography>
                 </Grid>
-                <Grid item xs={6} sx={{mb: 1}}>
+                <Grid item md={6} xs={12} sx={{mb: 1}}>
                     <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                         Status
                     </Typography>
@@ -82,7 +82,7 @@ export default function Info() {
                         {metadata.currentStatus}
                     </Typography>
                 </Grid>
-                <Grid item xs={6} sx={{mb: 1}}>
+                <Grid item md={6} xs={12} sx={{mb: 1}}>
                     <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                         Location
                     </Typography>
@@ -90,7 +90,7 @@ export default function Info() {
                         {metadata.city}, {metadata.country}
                     </Typography>
                 </Grid>
-                <Grid item xs={6} sx={{mb: 1}}>
+                <Grid item md={6} xs={12} sx={{mb: 1}}>
                     <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
                         Role
                     </Typography>
@@ -104,10 +104,6 @@ export default function Info() {
             </Typography>
             <GetAllDatasets />
             <CreateDataset/>
-            {/* <AlignDistributions /> */}
-            <Typography sx={{ fontSize: 20 }} color='#9e9e9e'>
-                Issues
-            </Typography>
         </div>
     );
 }
