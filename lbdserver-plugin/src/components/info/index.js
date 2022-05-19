@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import CreateDataset from '../Datasets/CreateDatasets';
+import Filter from '../../components/filter/index'
 
 export default function Info() {
     const [metadata, setMetadata] = useState({})
@@ -104,6 +105,7 @@ export default function Info() {
             </Typography>
             <GetAllDatasets />
             <CreateDataset/>
+            <Filter/>
         </div>
     );
 }

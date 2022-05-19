@@ -1,4 +1,5 @@
 import { Session } from "@inrupt/solid-client-authn-browser"
+import { set } from "lodash"
 import {atom} from "recoil"
 import {v4} from 'uuid'
 
@@ -47,10 +48,21 @@ const trigger = atom({
   key: "trigger",
   default: v4()
 })  
+
+const filetype = atom({
+  key: "filetypes",
+  default: []
+}) 
+
+const filter = atom({
+  key: "filter",
+  default: ''
+}) 
+
 // const session = atom({
 //   key: "session",
 //   default: new Session()
 // })
 
 
-export {sessionTrigger, loadedParcels, project, propagate, datasets, selectedElements, sorter, searcher, trigger}
+export {sessionTrigger, loadedParcels, project, propagate, datasets, selectedElements, sorter, searcher, trigger, filetype, filter}

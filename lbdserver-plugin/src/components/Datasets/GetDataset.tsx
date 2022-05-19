@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { getDefaultSession, login, Session } from '@inrupt/solid-client-authn-browser';
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { project as p, datasets as d, trigger as t } from "../../atoms"
+import { project as p, datasets as d, trigger as t, filetype, filter} from "../../atoms"
 import { v4 } from "uuid"
 import { LbdDataset } from "lbdserver-client-api"
 import { AGGREGATOR_ENDPOINT } from '../../constants';
@@ -26,22 +26,27 @@ export default function GetAllDatasets(props: any) {
     const [success, setSuccess] = useState(false)
     const [datasets, setDatasets] = useRecoilState(d)
     const [trigger, setTrigger] = useRecoilState(t)
+    const [filetypes, setFiletypes] = useRecoilState(filetype)
+    const [filters, setFilters] = useRecoilState(filter)
 
     async function getAllDatasets() {
         try {
             setLoading(true)
             const allDatasets = await project.getAllDatasetUrls()
             const loaded = {}
+            const mediatypes = new Set()
             for (const ds of allDatasets) {
                 const myDs = new LbdDataset(getDefaultSession(), ds)
                 await myDs.init()
                 const distribution = extract(myDs.data, myDs.url)[DCAT.distribution][0]["@id"]
                 const mediatype = extract(myDs.data, distribution)[DCAT.mediaType][0]["@id"].slice(45)
-                if (mediatype == "application/pdf") {
+                mediatypes.add(mediatype)
+                if (mediatype == filters || filters == "") {
                   loaded[ds] = { dataset: myDs, active: false }
                 } 
             }
             setDatasets(loaded)
+            setFiletypes(Array.from(mediatypes))
         } catch (error) {
             setError(error)
             setLoading(false)
@@ -50,7 +55,7 @@ export default function GetAllDatasets(props: any) {
 
     useEffect(() => {
         getAllDatasets()
-    }, [trigger])
+    }, [trigger, filters])
 
     if (Object.keys(datasets).length != 0) {
         return <div key={trigger}>
