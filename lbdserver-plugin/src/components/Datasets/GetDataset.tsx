@@ -9,7 +9,7 @@ import { v4 } from "uuid"
 import { LbdDataset } from "lbdserver-client-api"
 import { AGGREGATOR_ENDPOINT } from '../../constants';
 import { extract } from '../../util/functions';
-import { DCTERMS, LDP, RDFS } from '@inrupt/vocab-common-rdf'
+import { DCTERMS, LDP, RDFS, DCAT } from '@inrupt/vocab-common-rdf'
 
 const Input = styled('input')({
     display: 'none',
@@ -34,9 +34,12 @@ export default function GetAllDatasets(props: any) {
             const loaded = {}
             for (const ds of allDatasets) {
                 const myDs = new LbdDataset(getDefaultSession(), ds)
-                console.log(myDs)
                 await myDs.init()
-                loaded[ds] = { dataset: myDs, active: false }
+                const distribution = extract(myDs.data, myDs.url)[DCAT.distribution][0]["@id"]
+                const mediatype = extract(myDs.data, distribution)[DCAT.mediaType][0]["@id"].slice(45)
+                if (mediatype == "application/pdf") {
+                  loaded[ds] = { dataset: myDs, active: false }
+                } 
             }
             setDatasets(loaded)
         } catch (error) {
@@ -46,15 +49,8 @@ export default function GetAllDatasets(props: any) {
     }
 
     useEffect(() => {
-        console.log(trigger)
-        getAllDatasets().then(i => {
-            console.log('succes',datasets)
-        })
+        getAllDatasets()
     }, [trigger])
-
-    useEffect(() => {
-        console.log('dataset', datasets)
-    }, [datasets])
 
     if (Object.keys(datasets).length != 0) {
         return <div key={trigger}>
@@ -82,8 +78,11 @@ function DatasetInfo(props: { dataset: { dataset: InstanceType<typeof LbdDataset
     function makeLabel() {
         const label = extract(dataset.data, dataset.url)[RDFS.label][0]["@value"]
         const creator = extract(dataset.data, dataset.url)[DCTERMS.creator][0]["@id"].slice(22, -16)
+        const distribution = extract(dataset.data, dataset.url)[DCAT.distribution][0]["@id"]
+        const mediatype = extract(dataset.data, distribution)[DCAT.mediaType][0]["@id"].slice(45)
         const first = creator.charAt(0).toUpperCase()
-        return `${label} - ${first + creator.slice(1)}`
+          return `${label} - ${first + creator.slice(1)} -${mediatype}`
+      
     }
 
     function toggleDatasetState() {

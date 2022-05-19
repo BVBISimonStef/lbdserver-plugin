@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import BasicTabs from '../Documentation/Dialogs/BasicTabs';
 import Info from '../../components/info';
-import FormDialog from '../../components/issuemngmt';
-import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Tooltip } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
 
 const ProjectPage = () => {

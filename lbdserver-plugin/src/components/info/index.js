@@ -1,11 +1,10 @@
 import { Typography, Grid, IconButton, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { project as p } from "../../atoms"
 import { newEngine } from '@comunica/actor-init-sparql'
 import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
 import GetAllDatasets from '../Datasets/GetDataset';
-import AlignDistributions from '../Datasets/AlignDatasets';
 import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,7 +21,6 @@ export default function Info() {
 
     useEffect(() => {
         getProjectData()
-        console.log('project', project)
     }, [])
 
     async function getProjectData() {
