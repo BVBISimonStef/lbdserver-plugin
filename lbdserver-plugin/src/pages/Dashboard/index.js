@@ -1,34 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
-import { LbdService } from "lbdserver-client-api"
-import BasicCard from '../../components/card';
-import SearchBar from '../../components/searchBar';
-import Sort from '../../components/sort';
-import Grid from '@mui/material/Grid';
-import { trigger as t, propagate, sorter, searcher } from '../../atoms';
-import { useRecoilValue, useRecoilState } from 'recoil'
-import { newEngine } from '@comunica/actor-init-sparql'
-import { Typography } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { getDefaultSession, login } from "@inrupt/solid-client-authn-browser";
+import { LbdService } from "lbdserver-client-api";
+import BasicCard from "../../components/card";
+import SearchBar from "../../components/searchBar";
+import Sort from "../../components/sort";
+import Grid from "@mui/material/Grid";
+import { trigger as t, propagate, sorter, searcher } from "../../atoms";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { newEngine } from "@comunica/actor-init-sparql";
+import { Button, Typography } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+const packageJSON = require("../../../package.json")
 
 const DashboardPage = () => {
-  const [projects, setProjects] = useState([])
-  const [trigger, setTrigger] = useRecoilValue(t)
-  const [update, setUpdate] = useRecoilState(propagate)
-  const [search, setSearch] = useRecoilState(searcher)
-  const [sort, setSort] = useRecoilState(sorter)
-
+  const [projects, setProjects] = useState([]);
+  const [trigger, setTrigger] = useRecoilValue(t);
+  const [update, setUpdate] = useRecoilState(propagate);
+  const [search, setSearch] = useRecoilState(searcher);
+  const [sort, setSort] = useRecoilState(sorter);
+  const [oidcIssuer, setOidcIssuer] = useState("http://localhost:5000");
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-      getProjects()
-  }, [update, sort, search, trigger])
+    getProjects();
+  }, [update, sort, search, trigger]);
 
   async function getProjects() {
     try {
-      var metadata = []
-      var myService = new LbdService(getDefaultSession())
-      let endpoint
+      var metadata = [];
+      var myService = new LbdService(getDefaultSession());
+      let endpoint;
       if (getDefaultSession().info.isLoggedIn) {
-        endpoint = await myService.getProjectRegistry(getDefaultSession().info.webId)
+        endpoint = await myService.getProjectRegistry(
+          getDefaultSession().info.webId
+        );
       }
       const myProjects = await myService.getAllProjects(endpoint);
       for (const project in myProjects) {
@@ -42,31 +47,36 @@ const DashboardPage = () => {
             <http://id> ?id .       
             
           } LIMIT 1
-          `
-        const myEngine = newEngine()
-        const results = await myEngine.query(query, { sources: [myProjects[project]], fetch: getDefaultSession().fetch })
-        const bindings = await results.bindings()
-        bindings.forEach(binding => {
+          `;
+        const myEngine = newEngine();
+        const results = await myEngine.query(query, {
+          sources: [myProjects[project]],
+          fetch: getDefaultSession().fetch,
+        });
+        const bindings = await results.bindings();
+        bindings.forEach((binding) => {
           const myMetadata = {
             location: myProjects[project],
-            label: binding.get('?label').id.slice(1, -1),
-            year: binding.get('?year').id.slice(1, -1),
-            country: binding.get('?country').id.slice(1, -1),
-            city: binding.get('?city').id.slice(1, -1),
-            currentStatus: binding.get('?currentStatus').id.slice(1, -1),
-            role: binding.get('?role').id.slice(1, -1),
-            id: binding.get('?id').id.slice(1, -1)
-          }
-          const check = Object.values(myMetadata).map(word => word.toLowerCase())
+            label: binding.get("?label").id.slice(1, -1),
+            year: binding.get("?year").id.slice(1, -1),
+            country: binding.get("?country").id.slice(1, -1),
+            city: binding.get("?city").id.slice(1, -1),
+            currentStatus: binding.get("?currentStatus").id.slice(1, -1),
+            role: binding.get("?role").id.slice(1, -1),
+            id: binding.get("?id").id.slice(1, -1),
+          };
+          const check = Object.values(myMetadata).map((word) =>
+            word.toLowerCase()
+          );
           if (check.join("").includes(search.toLowerCase()) || search == "") {
-            metadata.push(myMetadata)
+            metadata.push(myMetadata);
           }
-        })
+        });
       }
-      setProjects(metadata.sort(dynamicSort(sort)))
-      return metadata
+      setProjects(metadata.sort(dynamicSort(sort)));
+      return metadata;
     } catch (error) {
-      console.log('error', error);
+      console.log("error", error);
     }
   }
 
@@ -77,22 +87,49 @@ const DashboardPage = () => {
       property = property.substr(1);
     }
     return function (a, b) {
-      var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+      var result =
+        a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
       return result * sortOrder;
-    }
+    };
   }
 
-  return <div>
-    {getDefaultSession().info.isLoggedIn ? (
+  let navigate = useNavigate();
+    function handleClick() {
+        navigate("/create")
+    }
+  
+  const onLoginClick = async (e) => {
+    try {
+      setLoading(true);
+      if (!getDefaultSession().info.isLoggedIn) {
+        await login({
+          oidcIssuer,
+          redirectUrl: window.location.href,
+          clientName: packageJSON.name,
+        });
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(`error`, error);
+    }
+  }; 
+
+  if (getDefaultSession().info.isLoggedIn && projects.length !== 0) {
+    return (
       <Grid container spacing={3} sx={{ p: 3 }}>
         <Grid item lg={4} md={6} sm={6} xs={12}>
           <SearchBar />
         </Grid>
-        <Grid item lg={6} md={3} sm={2} xs={12}
+        <Grid
+          item
+          lg={6}
+          md={3}
+          sm={2}
+          xs={12}
           sx={{
-            display: { xs: "none", sm: "block", md: "block", lg: "block" }
-          }}>
-        </Grid>
+            display: { xs: "none", sm: "block", md: "block", lg: "block" },
+          }}
+        ></Grid>
         <Grid item lg={2} md={3} sm={4} xs={12}>
           <Sort />
         </Grid>
@@ -110,14 +147,43 @@ const DashboardPage = () => {
             />
           </Grid>
         ))}
+        <Grid item xs={12}>
+          <Button variant="contained" onClick={handleClick}>
+            + Project
+          </Button>
+        </Grid>
       </Grid>
-    ) : (
-      <div style={{ marginTop: 30 }}>
-        <Typography>You are not authenticated. Login to see your current projects.</Typography>
-      </div>
-    )}
-  </div>
-}
-
-export default DashboardPage
-
+    );
+  } else if (getDefaultSession().info.isLoggedIn && projects.length === 0) {
+    return (
+      <Grid container spacing={3} sx={{ p: 3 }}>
+        <Grid item xs={12}>
+          <Typography>
+            You have currently no projects. Click here to add a project.
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Button variant="contained" onClick={handleClick}>
+            + Project
+          </Button>
+        </Grid>
+      </Grid>
+    );
+  } else {
+    return (
+      <Grid container spacing={3} sx={{ p: 3 }}>
+        <Grid item xs={12}>
+          <Typography>
+            You are not authenticated. Login to see your current projects.
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Button  variant="contained" onClick={onLoginClick}>
+            Log In
+          </Button>
+        </Grid>
+      </Grid>
+    );
+  }
+};
+export default DashboardPage;
