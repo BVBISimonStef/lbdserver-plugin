@@ -84,7 +84,7 @@ export default function CreateDataset(props) {
     }
 
     return <div>
-        <Button variant="outlined" onClick={handleClickOpen} sx={{my: 3}}>
+        <Button variant="contained" onClick={handleClickOpen} sx={{my: 3}}>
             Create Dataset
         </Button>
         <Dialog open={openform} onClose={handleClose}>
