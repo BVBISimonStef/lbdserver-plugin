@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { TextField, Button, Typography, FormControl, RadioGroup, Radio, FormControlLabel, Alert, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip } from '@mui/material'
+import React, { useState } from 'react';
+import { TextField, Button, FormControl, RadioGroup, Radio, FormControlLabel, Alert, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip } from '@mui/material'
 import { styled } from '@mui/material/styles';
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { project as p, trigger as t } from "../../atoms"
 import { AGGREGATOR_ENDPOINT } from '../../constants';
 import { RDFS } from '@inrupt/vocab-common-rdf'

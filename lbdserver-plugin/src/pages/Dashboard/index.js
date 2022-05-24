@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 const packageJSON = require("../../../package.json")
 
 const DashboardPage = () => {
+  const [projectcheck, setProjectcheck] = useState([]);
   const [projects, setProjects] = useState([]);
   const [trigger, setTrigger] = useRecoilValue(t);
   const [update, setUpdate] = useRecoilState(propagate);
@@ -28,6 +29,7 @@ const DashboardPage = () => {
   async function getProjects() {
     try {
       var metadata = [];
+      var metadatacheck = [];
       var myService = new LbdService(getDefaultSession());
       let endpoint;
       if (getDefaultSession().info.isLoggedIn) {
@@ -68,11 +70,13 @@ const DashboardPage = () => {
           const check = Object.values(myMetadata).map((word) =>
             word.toLowerCase()
           );
+          metadatacheck.push(myMetadata)
           if (check.join("").includes(search.toLowerCase()) || search == "") {
             metadata.push(myMetadata);
           }
         });
       }
+      setProjectcheck(metadatacheck)
       setProjects(metadata.sort(dynamicSort(sort)));
       return metadata;
     } catch (error) {
@@ -114,7 +118,7 @@ const DashboardPage = () => {
     }
   }; 
 
-  if (getDefaultSession().info.isLoggedIn && projects.length !== 0) {
+  if (getDefaultSession().info.isLoggedIn && projectcheck.length !== 0) {
     return (
       <Grid container spacing={3} sx={{ p: 3 }}>
         <Grid item lg={4} md={6} sm={6} xs={12}>
@@ -154,7 +158,7 @@ const DashboardPage = () => {
         </Grid>
       </Grid>
     );
-  } else if (getDefaultSession().info.isLoggedIn && projects.length === 0) {
+  } else if (getDefaultSession().info.isLoggedIn && projectcheck.length === 0) {
     return (
       <Grid container spacing={3} sx={{ p: 3 }}>
         <Grid item xs={12}>
