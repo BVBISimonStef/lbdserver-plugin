@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Button, Typography, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel, Alert, Checkbox, FormGroup } from '@mui/material'
+import {  Typography, FormControlLabel,  Checkbox, FormGroup, Grid, IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button  } from '@mui/material'
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
-import { getDefaultSession, login, Session } from '@inrupt/solid-client-authn-browser';
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
+import { useRecoilState } from 'recoil'
 import { project as p, datasets as d, trigger as t, filetype, filter} from "../../atoms"
-import { v4 } from "uuid"
 import { LbdDataset } from "lbdserver-client-api"
 import { AGGREGATOR_ENDPOINT } from '../../constants';
 import { extract } from '../../util/functions';
-import { DCTERMS, LDP, RDFS, DCAT } from '@inrupt/vocab-common-rdf'
+import { DCTERMS, RDFS, DCAT } from '@inrupt/vocab-common-rdf'
+import DeleteIcon from '@mui/icons-material/Delete';
+import { v4 } from "uuid"
 
 const Input = styled('input')({
     display: 'none',
@@ -39,9 +39,10 @@ export default function GetAllDatasets(props: any) {
                 const myDs = new LbdDataset(getDefaultSession(), ds)
                 await myDs.init()
                 const distribution = extract(myDs.data, myDs.url)[DCAT.distribution][0]["@id"]
-                const mediatype = extract(myDs.data, distribution)[DCAT.mediaType][0]["@id"].slice(45)
-                mediatypes.add(mediatype)
-                if (mediatype == filters || filters == "") {
+                const mediatype = extract(myDs.data, distribution)[DCAT.mediaType][0]["@id"]
+                const type = mediatype.substring(mediatype.lastIndexOf('/') + 1)
+                mediatypes.add(type)
+                if (type == filters || filters == "") {
                   loaded[ds] = { dataset: myDs, active: false }
                 } 
             }
@@ -84,14 +85,96 @@ function DatasetInfo(props: { dataset: { dataset: InstanceType<typeof LbdDataset
         const label = extract(dataset.data, dataset.url)[RDFS.label][0]["@value"]
         const creator = extract(dataset.data, dataset.url)[DCTERMS.creator][0]["@id"].slice(22, -16)
         const distribution = extract(dataset.data, dataset.url)[DCAT.distribution][0]["@id"]
-        const mediatype = extract(dataset.data, distribution)[DCAT.mediaType][0]["@id"].slice(45)
+        const mediatype = extract(dataset.data, distribution)[DCAT.mediaType][0]["@id"]
+        const type = mediatype.substring(mediatype.lastIndexOf('/') + 1)
         const first = creator.charAt(0).toUpperCase()
-          return `${label} - ${first + creator.slice(1)} -${mediatype}`
+        const [open, setOpen] = useState(false)
+        const [trigger, setTrigger] = useRecoilState(t)
+
+        async function handleClick() {
+          const theDataset = new LbdDataset(getDefaultSession(), dataset.url)
+          await theDataset.init()
+          await theDataset.delete()
+          setTrigger(v4())
+          setOpen(false)
+        }
       
+        function handleClickOpen() {
+          setOpen(true)
+        }
+      
+        function handleClose() {
+          setOpen(false)
+        }
+
+          return (
+            <Grid container sx={{ p: 1 }} >
+              <Grid item xs={10}>
+              <Grid>
+                <Typography display="inline" color='#9e9e9e' sx={{ mr:1 }} >
+                  Label: 
+                </Typography>
+                <Typography display="inline" >
+                  {label}
+                </Typography>
+              </Grid>
+              <Grid>
+                <Typography display="inline" color='#9e9e9e' sx={{ mr:1 }} >
+                  Creator: 
+                </Typography>
+                <Typography display="inline" >
+                  {first + creator.slice(1)}
+                </Typography>
+              </Grid>
+              <Grid>
+                <Typography display="inline" color='#9e9e9e' sx={{ mr:1 }} >
+                  Mediatype: 
+                </Typography>
+                <Typography display="inline" >
+                  {type}
+                </Typography>
+              </Grid>
+              </Grid>
+              <Grid item xs={2}>
+                <Tooltip title="Delete Dataset">
+                  <IconButton style={{top: '20%'}} onClick={() => handleClickOpen()}>
+                      <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+                <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  Do you really want to delete {label}?
+                </DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Deleting the dataset can not be undone.
+                </DialogContentText>
+              </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button onClick={handleClick} autoFocus>
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              </Grid>
+            </Grid>
+          )
     }
 
     function toggleDatasetState() {
         setDatasets({ ...datasets, [dataset.url]: { dataset, active: !active } })
     }
-    return <FormControlLabel onChange={toggleDatasetState} control={<Checkbox checked={active} />} label={makeLabel()} />
+    return (
+      <Grid container>
+        <Grid item xs={12} >
+        <FormControlLabel onChange={toggleDatasetState} control={<Checkbox checked={active} />} label={makeLabel()}/>
+        </Grid>
+      </Grid>
+    )
 };

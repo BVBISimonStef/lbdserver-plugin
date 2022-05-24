@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { TextField, Button, Typography, Alert } from "@mui/material";
 import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 import { useRecoilState } from "recoil";
 import { project as p } from "../../../atoms";
 import { v4 } from "uuid";
 import { LbdProject, LbdService } from "lbdserver-client-api";
-import { AGGREGATOR_ENDPOINT } from "../../../constants";
 import { RDFS } from "@inrupt/vocab-common-rdf";
 import { useNavigate } from "react-router-dom";
 
