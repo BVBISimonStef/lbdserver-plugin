@@ -56,7 +56,6 @@ export default function GetAllDatasets(props: any) {
 
     useEffect(() => {
         getAllDatasets()
-        console.log(trigger)
     }, [trigger, filters])
 
     if (Object.keys(datasets).length != 0) {
