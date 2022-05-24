@@ -17,7 +17,7 @@ export default function Info() {
 
     let navigate = useNavigate();
     function handleClick() {
-        navigate("/dashboard")
+        navigate("/")
     }
 
     useEffect(() => {
@@ -103,9 +103,11 @@ export default function Info() {
             <Typography sx={{ fontSize: 20, mb: 1}} color='#9e9e9e'>
                 Datasets
             </Typography>
+            <Grid sx={{ mb: 3}}>
+              <Filter/>
+            </Grid>
             <GetAllDatasets/>
-            <CreateDataset/>
-            <Filter/>
+            <CreateDataset/>        
         </div>
     );
 }

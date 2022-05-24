@@ -1,11 +1,6 @@
 import React from 'react'
 import { Grid } from '@mui/material'
-import GetProjects from '../Documentation/Dialogs/GetProjects'
 import CreateProject from '../Documentation/Dialogs/CreateProject'
-import CreateDataset from '../Documentation/Dialogs/CreateDataset'
-import GetAllDatasets from '../Documentation/Dialogs/GetAllDatasets'
-import AlignDistributions from '../Documentation/Dialogs/AlignDistributions'
-import BasicTabs from '../Documentation/Dialogs/BasicTabs'
 
 const DemoPage = () => {
     return (
@@ -13,7 +8,7 @@ const DemoPage = () => {
             <Grid item xs={1} sm={1} md={2} />
             <Grid item xs={4} sm={6} md={8} >
                 <div style={subComponentStyle}>
-                    <CreateProject title={"Create a project (login required)"} />
+                    <CreateProject title={"Create a project"} />
                 </div>
             </Grid>
             <Grid item xs={0} sm={2} md={3} />
