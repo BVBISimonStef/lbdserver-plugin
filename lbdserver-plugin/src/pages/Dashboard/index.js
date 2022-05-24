@@ -177,7 +177,7 @@ const DashboardPage = () => {
     return (
       <Grid container spacing={3} sx={{ p: 3 }}>
         <Grid item xs={12}>
-          <Typography>
+          <Typography sx={{mx:5}}>
             You are not authenticated. Login to see your current projects.
           </Typography>
         </Grid>
