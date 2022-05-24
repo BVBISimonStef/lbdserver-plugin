@@ -10,11 +10,14 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { newEngine } from "@comunica/actor-init-sparql";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import { AGGREGATOR_ENDPOINT } from '../../constants';
+
 const packageJSON = require("../../../package.json")
 
 const DashboardPage = () => {
   const [projectcheck, setProjectcheck] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [aggregator, setAggregator] = useState(AGGREGATOR_ENDPOINT)
   const [trigger, setTrigger] = useRecoilValue(t);
   const [update, setUpdate] = useRecoilState(propagate);
   const [search, setSearch] = useRecoilState(searcher);
@@ -31,7 +34,7 @@ const DashboardPage = () => {
       var metadata = [];
       var metadatacheck = [];
       var myService = new LbdService(getDefaultSession());
-      let endpoint;
+      let endpoint  = aggregator;
       if (getDefaultSession().info.isLoggedIn) {
         endpoint = await myService.getProjectRegistry(
           getDefaultSession().info.webId
@@ -177,7 +180,7 @@ const DashboardPage = () => {
     return (
       <Grid container spacing={3} sx={{ p: 3 }}>
         <Grid item xs={12}>
-          <Typography sx={{mx:5}}>
+          <Typography>
             You are not authenticated. Login to see your current projects.
           </Typography>
         </Grid>
