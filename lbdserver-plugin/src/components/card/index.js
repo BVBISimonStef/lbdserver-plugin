@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -26,8 +26,7 @@ export default function BasicCard({ location, label, year, country, city, curren
     const theProject = new LbdProject(getDefaultSession(), location)
     await theProject.init()
     setProject(theProject)
-    let path = "/projectpage"
-    navigate(path);
+    navigate("/projectpage");
   }
 
   async function handleClick() {

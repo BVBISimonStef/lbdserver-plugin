@@ -17,7 +17,7 @@ export default function Info() {
 
     let navigate = useNavigate();
     function handleClick() {
-        navigate("/dashboard")
+        navigate("/")
     }
 
     useEffect(() => {
