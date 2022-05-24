@@ -113,7 +113,7 @@ const DashboardPage = () => {
       </Grid>
     ) : (
       <div style={{ marginTop: 30 }}>
-        <Typography>You are not authenticated. Login to see your current projects.</Typography>
+        <Typography sx={{mx:5}}>You are not authenticated. Login to see your current projects.</Typography>
       </div>
     )}
   </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Button, Typography, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel, Alert } from '@mui/material'
-import { getDefaultSession, login, Session } from '@inrupt/solid-client-authn-browser';
+import { getDefaultSession } from '@inrupt/solid-client-authn-browser';
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { project as p } from "../../../atoms"
 import { v4 } from "uuid"
